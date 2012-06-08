@@ -29,13 +29,21 @@ steal("funcunit/qunit", "jquery/dom/deparam", "jquery/dom/selection").then(funct
 			'array with object children');
 	});
 	
+	test('automatic type conversion', function () {
+		same($.deparam('a=999', true), {a:999}, 'valid numbers');
+		same($.deparam('a=Infinity', true), {a:'Infinity'}, 'invalid numbers: Infinity');
+		same($.deparam('a=NaN', true), {a:'NaN'}, 'invalid numbers: NaN');
+		same($.deparam('a=true&b=false', true), {a:true,b:false}, 'boolean values');
+		same($.deparam('a=', true), {a:undefined}, 'undefined values');
+	});
+	
 	test('complex querystrings', function () {
 		var obj = {
 			a: 'b',
-			b: ['1', 'd'],
+			b: [1, 'd'],
 			c: {
-				a: ['1', '2', '3'],
-				b: '4'
+				a: [1, 2, 3],
+				b: 4
 			},
 			d: [
 				'a',
@@ -43,16 +51,11 @@ steal("funcunit/qunit", "jquery/dom/deparam", "jquery/dom/selection").then(funct
 				{c: 'd', e: 'f'},
 				['g', 'h', ['i']]
 			],
-			e: ['f']
+			e: ['f'],
+			f: true,
+			g: false,
+			h: undefined
 		};
-		same($.deparam(decodeURIComponent($.param(obj))), obj, 'complex object');
-	});
-	
-	test('automatic type conversion', function () {
-		same($.deparam('a=999', true), {a:999}, 'valid numbers');
-		same($.deparam('a=Infinity', true), {a:'Infinity'}, 'invalid numbers: Infinity');
-		same($.deparam('a=NaN', true), {a:'NaN'}, 'invalid numbers: NaN');
-		same($.deparam('a=true&b=false', true), {a:true,b:false}, 'boolean values');
-		same($.deparam('a=', true), {a:undefined}, 'undefined values');
+		same($.deparam(decodeURIComponent($.param(obj)), true), obj, 'complex object');
 	});
 });
