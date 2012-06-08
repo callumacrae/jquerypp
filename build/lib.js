@@ -2,6 +2,7 @@ steal(
 	"jquery/dom/animate",
 	"jquery/dom/compare",
 	"jquery/dom/cookie",
+	"jquery/dom/deparam",
 	"jquery/dom/dimensions",
 	"jquery/dom/form_params",
 	"jquery/dom/range",
